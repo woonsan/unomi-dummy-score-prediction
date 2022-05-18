@@ -21,33 +21,37 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.unomi</groupId>
-    <artifactId>unomi-extensions</artifactId>
-    <version>1.6.0</version>
+    <groupId>com.github.woonsan</groupId>
+    <artifactId>unomi-dummy-score-prediction</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.github.woonsan</groupId>
-  <artifactId>unomi-dummy-score-prediction</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
-  <name>Unomi Extension for Dummy Score Prediction Demo</name>
-  <packaging>pom</packaging>
+  <artifactId>unomi-dummy-score-prediction-core</artifactId>
+  <name>Unomi Extension for Dummy Score Prediction Demo Core</name>
+  <packaging>bundle</packaging>
 
-  <properties>
-    <unomi.version>1.6.0</unomi.version>
-  </properties>
-
-  <modules>
-    <module>core</module>
-    <module>karaf-kar</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.unomi</groupId>
+      <artifactId>unomi-api</artifactId>
+      <version>${unomi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
-          <skip>true</skip>
+          <instructions>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Import-Package>
+              *
+            </Import-Package>
+          </instructions>
         </configuration>
       </plugin>
     </plugins>

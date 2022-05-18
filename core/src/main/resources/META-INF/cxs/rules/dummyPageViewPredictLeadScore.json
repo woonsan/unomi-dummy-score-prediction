@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "id": "dummyPageViewPredictLeadScore",
+    "name": "Dummy predict lead score on page view event",
+    "description": ""
+  },
+  "raiseEventOnlyOnceForSession": false,
+  "condition": {
+      "type": "eventTypeCondition",
+      "parameterValues": {
+        "eventTypeId": "view"
+      }
+  },
+  "actions": [
+    {
+      "type": "dummyPredictiveLeadScoringAction",
+      "parameterValues": {
+      }
+    }
+  ]
+}
