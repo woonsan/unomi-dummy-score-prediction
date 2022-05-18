@@ -18,6 +18,7 @@ package com.github.woonsan.unomi.dummyprediction;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.unomi.api.CustomItem;
 import org.apache.unomi.api.Event;
 import org.apache.unomi.api.actions.Action;
@@ -35,22 +36,11 @@ public class DummyPredictiveLeadScoringAction implements ActionExecutor {
     private String seed;
 
     @Override
-    public int execute(Action action, Event event) {
-        int dummyPredictedScore = -1;
-
-        if ("view".equals(event.getEventType())) {
-            final CustomItem pageItem = (CustomItem) event.getTarget();
-            final Map<String, Object> pageInfo = (Map<String, Object>) pageItem.getProperties()
-                    .get("pageInfo");
-            final String landingPageId = (String) pageInfo.get("destinationURL");
-            final String referrerId = (String) pageInfo.get("referringURL");
-
-            // TODO
-            dummyPredictedScore = 5;
-        }
+    public int execute(final Action action, final Event event) {
+        final int dummyPredictedScore = calculateDummyPredictedScore(event);
 
         if (dummyPredictedScore >= 0) {
-            logger.info("Dummy profile score is now: " + dummyPredictedScore);
+            logger.info("Setting the dummy profile score on profile: {}", dummyPredictedScore);
             event.getProfile().setProperty(DUMMY_LEAD_SCORING_PROPERTY,
                     Integer.valueOf(dummyPredictedScore));
             return EventService.PROFILE_UPDATED;
@@ -65,5 +55,46 @@ public class DummyPredictiveLeadScoringAction implements ActionExecutor {
 
     public void setSeed(final String seed) {
         this.seed = seed;
+    }
+
+    private int calculateDummyPredictedScore(final Event event) {
+        if (!StringUtils.equals("view", event.getEventType())) {
+            return -1;
+        }
+
+        final CustomItem pageItem = (CustomItem) event.getTarget();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> pageInfo = (Map<String, Object>) pageItem.getProperties()
+                .get("pageInfo");
+        final String destinationURL = (String) pageInfo.get("destinationURL");
+        final String referringURL = (String) pageInfo.get("referringURL");
+
+        logger.info("destinationURL: {}, referringURL: {}", destinationURL, referringURL);
+
+        if (StringUtils.contains(destinationURL, "/buy_kia_morning")) {
+            if (StringUtils.startsWith(referringURL, "https://www.google.com/")) {
+                final String query = StringUtils.substringAfter(referringURL, "/search?q=");
+
+                if (StringUtils.contains(query, "kia") && StringUtils.contains(query, "morning")) {
+                    return 5;
+                }
+                else {
+                    return 3;
+                }
+            }
+            else {
+                final String queryString = StringUtils.substringAfter(referringURL, "?");
+
+                if (StringUtils.contains(queryString, "kia")
+                        && StringUtils.contains(queryString, "morning")) {
+                    return 4;
+                }
+                else {
+                    return 2;
+                }
+            }
+        }
+
+        return 1;
     }
 }
