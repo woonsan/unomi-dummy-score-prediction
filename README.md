@@ -115,7 +115,25 @@ Content-Type: application/json
 }
 ```
 
-- Query the profile again and you will see the `dummyLeadScoringProbability` property set to the `profileProperties` of the `profile` object.
+- Query the profile again and you will see the `dummyLeadScoringProbability` property set to the `profileProperties` of the `profile` object, like the following example:
+
+```
+{
+  "profileId": "90639cf8-f1cc-48ed-964b-077c0f70f787",
+  "sessionId": "1234",
+  "profileProperties": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "nbOfVisits": 2,
+    "lastVisit": "2022-05-10T05:54:14Z",
+    "dummyLeadScoringProbability": 4,
+    "firstVisit": "2022-05-09T02:28:08Z",
+    "email": "john.doe@acme.com",
+    "previousVisit": "2022-05-09T02:28:08Z"
+  },
+  //...
+}
+```
 
 - Also, try to change the `refereringURL` and `destinationURL` properties in the event input and see how it affects the dummy score calculation.
   For a simple demonstration, the dummy score calculation is hard-coded very simply in [DummyPredictiveLeadScoringAction.java](/unomi-dummy-score-prediction-core/src/main/java/com/github/woonsan/unomi/dummyprediction/DummyPredictiveLeadScoringAction.java).
