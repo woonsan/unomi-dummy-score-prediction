@@ -136,5 +136,5 @@ Content-Type: application/json
 ```
 
 - Also, try to change the `refereringURL` and `destinationURL` properties in the event input and see how it affects the dummy score calculation.
-  For a simple demonstration, the dummy score calculation is hard-coded very simply in [DummyPredictiveLeadScoringAction.java](/woonsan/unomi-dummy-score-prediction/blob/main/core/src/main/java/com/github/woonsan/unomi/dummyprediction/DummyPredictiveLeadScoringAction.java).
+  For a simple demonstration, the dummy score calculation is hard-coded very simply in [DummyPredictiveLeadScoringAction.java](/blob/main/core/src/main/java/com/github/woonsan/unomi/dummyprediction/DummyPredictiveLeadScoringAction.java).
 
